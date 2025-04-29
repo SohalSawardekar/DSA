@@ -1,0 +1,69 @@
+Reorder Linked List
+You are given the head of a singly linked-list.
+
+The positions of a linked list of length = 7 for example, can intially be represented as:
+
+[0, 1, 2, 3, 4, 5, 6]
+
+Reorder the nodes of the linked list to be in the following order:
+
+[0, 6, 1, 5, 2, 4, 3]
+
+Notice that in the general case for a list of length = n the nodes are reordered to be in the following order:
+
+[0, n-1, 1, n-2, 2, n-3, ...]
+
+You may not modify the values in the list's nodes, but instead you must reorder the nodes themselves.
+
+Example 1:
+
+Input: head = [2,4,6,8]
+
+Output: [2,8,4,6]
+Example 2:
+
+Input: head = [2,4,6,8,10]
+
+Output: [2,10,4,8,6]
+Constraints:
+
+1 <= Length of the list <= 1000.
+1 <= Node.val <= 1000
+
+
+Solution: 
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        // Step 1: Count the total number of nodes
+        int length = 0;
+        ListNode* temp = head;
+        while (temp != nullptr) {
+            length++;
+            temp = temp->next;
+        }
+
+        // Step 2: Special case — remove the head
+        if (n == length) {
+            ListNode* toDelete = head;
+            head = head->next;
+            delete toDelete;
+            return head;
+        }
+
+        // Step 3: Go to (length - n - 1)th node (just before the one to delete)
+        temp = head;
+        for (int i = 0; i < length - n - 1; i++) {
+            temp = temp->next;
+        }
+
+        // Step 4: Delete the target node
+        ListNode* toDelete = temp->next;
+        temp->next = temp->next->next;
+        delete toDelete;
+
+        return head;
+    }
+};
+
+
